@@ -1,8 +1,8 @@
-## First solo full stack project
+# First solo full stack project
 
-# This will be a Job Application Tracking App
+## This will be a Job Application Tracking App
 
-# Tech stack: React.js, Express.js, MongoDB, Node.js
+### Tech stack: React.js, Express.js, MongoDB, Node.js
 
 `npm run dev` - to start front end
 

@@ -1,17 +1,21 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
-import connectToDatabase from "./db/DbConnection.js";
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const connectToDatabase = require("./db/DbConnection");
 dotenv.config();
-import User from "./models/User.js";
+
+// routers
+const auth = require("./routes/auth.js");
 
 const app = express();
 app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 app.use(express.json());
 
+// routes
+app.use("/api/v1/auth", auth);
+
 const port = parseInt(process.env.PORT || "4000", 10);
 
-// route
 // parse int assures that PORT will be converted to a number as it is typically a string in production
 
 app.get("/", (req, res) => {
@@ -30,19 +34,3 @@ const initServer = async () => {
 };
 
 initServer();
-
-app.post("/register", async (req, res) => {
-  const { username, email, password } = req.body;
-
-  try {
-    const createUser = await User.create({
-      username,
-      email,
-      password,
-    });
-    res.json(createUser);
-  } catch (error) {
-    console.log(error);
-    res.status(400).json(error);
-  }
-});
