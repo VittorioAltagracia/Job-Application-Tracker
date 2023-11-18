@@ -6,3 +6,22 @@
 body {
   background: linear-gradient(to right, #262424, #fff);
 }
+
+div div.signUp {
+  padding: 120px 0;
+  margin: 17rem auto;
+  background: linear-gradient(to right, #000, white);
+  max-width: 30%;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  align-items: center;
+}
+div.signUp button {
+  margin: 20px 30px;
+}
+
+div.authentication {
+  background: linear-gradient(to right, #000, white);
+}

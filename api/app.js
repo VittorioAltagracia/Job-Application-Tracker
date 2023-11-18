@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
 
 const initServer = async () => {
   try {
-    await connectToDatabase(process.env.DB_CONNECTION_URL);
+    await connectToDatabase(process.env.DB_CONNECTION_URL); 
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });
