@@ -1,10 +1,12 @@
 import { Outlet } from "react-router-dom";
 import Dashboard from "./Dashboard";
-export default function Main() {
+const Main = () => {
   return (
     <main>
       <Dashboard />
       <Outlet />
     </main>
   );
-}
+};
+
+export default Main;

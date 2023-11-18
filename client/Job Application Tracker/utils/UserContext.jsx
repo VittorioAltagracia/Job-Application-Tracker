@@ -8,6 +8,7 @@ export function UserContextProvider({ children }) {
   return (
     <UserContext.Provider value={{ userInfo, setUserInfo }}>
       {children}
+      {console.log("User Context Provider - userInfo:", userInfo)}
     </UserContext.Provider>
   );
 }

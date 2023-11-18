@@ -1,24 +1,39 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Col } from "reactstrap";
 import { Navigate } from "react-router-dom";
+import { UserContext } from "../../utils/UserContext";
 
 const LoginPage = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirectUser, setRedirectUser] = useState(false);
+  const [errors, setErrors] = useState("");
+  const { setUserInfo } = useContext(UserContext);
 
-  async function registerUser(e) {
+  async function loginUser(e) {
     e.preventDefault();
-    const userCreation = await fetch("http://localhost:4000/login", {
+    if (!email || !password) {
+      setErrors("Please provide email and password.");
+    }
+    const userAuth = await fetch("http://localhost:4000/api/v1/auth/login", {
       method: "POST",
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ email, password }),
       headers: { "Content-type": "application/json" },
+      credentials: "include",
     });
+    const { user, token } = await userAuth.json();
 
-    userCreation.status === 200
-      ? (alert(`User with username ${username} logged in.`),
-        setRedirectUser(true))
-      : alert(`Login failed with ${userCreation.status} status code.`);
+    if (userAuth.status === 200) {
+      setUserInfo(userAuth);
+      localStorage.setItem("sessionToken", token);
+      localStorage.setItem("username", user.username);
+      alert(`User with username ${user.username} logged in.`);
+      // setRedirectUser(true);
+    } else {
+      alert(
+        `Login failed with ${userAuth.status} status code. ${userAuth.error}`
+      );
+    }
   }
 
   if (redirectUser) {
@@ -28,7 +43,7 @@ const LoginPage = () => {
   return (
     <div>
       <div className="signUp">
-        <form onSubmit={registerUser}>
+        <form onSubmit={loginUser}>
           <h2>Log In</h2>
           <Col xs="2">
             <label htmlFor="email">Email</label>
@@ -36,9 +51,9 @@ const LoginPage = () => {
           <input
             id="email"
             type="text"
-            placeholder="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            placeholder="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <Col xs="2" className="mt-3">
             <label htmlFor="password">Password</label>
@@ -52,8 +67,11 @@ const LoginPage = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </Col>
-          <button type="submit">Log In</button>
+          <button type="submit" className="p-1">
+            Log In
+          </button>
         </form>
+        {errors ? <p>{errors}</p> : null}
       </div>
     </div>
   );

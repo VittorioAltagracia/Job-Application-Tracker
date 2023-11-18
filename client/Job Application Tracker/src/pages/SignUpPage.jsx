@@ -27,7 +27,7 @@ const SignUpPage = () => {
   }
 
   if (redirectUser) {
-    return <Navigate to={"/main"} />;
+    return <Navigate to={"/auth/login"} />;
   }
 
   return (
